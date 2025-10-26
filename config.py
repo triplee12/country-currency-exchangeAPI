@@ -4,8 +4,8 @@ from starlette.datastructures import Secret, CommaSeparatedStrings
 
 import pathlib
 
-env_path = pathlib.Path(__file__).resolve().parents[0]/ ".env"
-config = Config(env_path)
+#env_path = pathlib.Path(__file__).resolve().parents[0]/ ".env"
+config = Config(".env")
 
 DATABASE_URL = config("DATABASE_URL", cast=str)
 HOST = config("HOST",cast=str, default="0.0.0.0")
