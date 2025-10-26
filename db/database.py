@@ -1,12 +1,10 @@
 from sqlalchemy import MetaData, create_engine
 from databases import Database
 from sqlalchemy import engine as sqla_engine
-from config import settings
+from config import DATABASE_URL
 
 
 metadata = MetaData()
-
-DATABASE_URL = settings.DATABASE_URL
 
 engine = create_engine(DATABASE_URL)
 

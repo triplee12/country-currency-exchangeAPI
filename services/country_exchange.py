@@ -4,18 +4,18 @@ from datetime import datetime, timezone
 import httpx
 from typing import Tuple, List, Dict
 from PIL import Image, ImageDraw, ImageFont
-from config import settings
+from config import RESTCOUNTRIES_URL, EXCHANGE_URL, CACHE_DIR
 from repositories.country_exchange import upsert_country, top_n_by_gdp, total_and_last_refreshed
 
 
 async def fetch_external() -> Tuple[List[dict], Dict[str, float]]:
     async with httpx.AsyncClient(timeout=20.0) as client:
-        r1 = await client.get(settings.RESTCOUNTRIES_URL)
+        r1 = await client.get(RESTCOUNTRIES_URL)
         if r1.status_code != 200:
             raise RuntimeError('countries_api')
         countries = r1.json()
 
-        r2 = await client.get(settings.EXCHANGE_URL)
+        r2 = await client.get(EXCHANGE_URL)
         if r2.status_code != 200:
             raise RuntimeError('exchange_api')
         exchange = r2.json()
@@ -72,10 +72,10 @@ async def process_and_save(countries: List[dict], rates: dict) -> None:
 
 
 async def generate_summary_image():
-    os.makedirs(settings.CACHE_DIR, exist_ok=True)
+    os.makedirs(CACHE_DIR, exist_ok=True)
     stats = await total_and_last_refreshed()
     top5 = await top_n_by_gdp(5)
-    path = os.path.join(settings.CACHE_DIR, 'summary.png')
+    path = os.path.join(CACHE_DIR, 'summary.png')
 
     w, h = 1200, 800
     img = Image.new('RGB', (w,h), color=(255,255,255))
