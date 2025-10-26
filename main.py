@@ -1,8 +1,8 @@
 from contextlib import asynccontextmanager
+import uvicorn
 from fastapi import FastAPI
 from db.database import database, engine, metadata
 from routes.countries import router as countries_router
-import uvicorn
 
 
 @asynccontextmanager
